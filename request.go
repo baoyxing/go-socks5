@@ -100,7 +100,7 @@ func NewRequest(bufConn io.Reader) (*Request, error) {
 	}
 
 	// Read in the destination address
-	dest, err := readAddrSpec(bufConn)
+	dest, err := ReadAddrSpec(bufConn)
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +253,7 @@ func (s *Server) handleAssociate(ctx context.Context, conn conn, req *Request) e
 
 // readAddrSpec is used to read AddrSpec.
 // Expects an address type byte, follwed by the address and port
-func readAddrSpec(r io.Reader) (*AddrSpec, error) {
+func ReadAddrSpec(r io.Reader) (*AddrSpec, error) {
 	d := &AddrSpec{}
 
 	// Get the address type
