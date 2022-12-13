@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"golang.org/x/net/context"
+	"context"
 )
 
 const (
@@ -170,11 +170,11 @@ func (s *Server) handleConnect(ctx context.Context, conn conn, req *Request) err
 	// Attempt to connect
 	dial := s.config.Dial
 	if dial == nil {
-		dial = func(ctx context.Context, net_, addr string) (net.Conn, error) {
+		dial = func(ctx context.Context, authCtx *AuthContext, net_, addr string) (net.Conn, error) {
 			return net.Dial(net_, addr)
 		}
 	}
-	target, err := dial(ctx, "tcp", req.realDestAddr.Address())
+	target, err := dial(ctx, req.AuthContext, "tcp", req.realDestAddr.Address())
 	if err != nil {
 		msg := err.Error()
 		resp := hostUnreachable
